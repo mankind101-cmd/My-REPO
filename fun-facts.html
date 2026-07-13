@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Fun Facts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .fact-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            line-height: 1.6;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-weight: 600;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .counter {
+            color: #666;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .fact-box {
+                font-size: 1em;
+                min-height: 100px;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Fun Facts Generator</h1>
+        
+        <div class="fact-box" id="factBox">
+            Click "Get a Fact" to discover something amazing!
+        </div>
+
+        <div class="button-group">
+            <button onclick="getNewFact()">🎲 Get a Fact</button>
+            <button class="reset-btn" onclick="resetFacts()">🔄 Reset</button>
+        </div>
+
+        <div class="counter">
+            <p>Facts displayed: <strong id="counter">0</strong></p>
+        </div>
+    </div>
+
+    <script>
+        const facts = [
+            "Honey never spoils. Archaeologists have found 3,000-year-old honey in Egyptian tombs that was still edible!",
+            "Octopuses have three hearts: two pump blood to the gills, and the third pumps it to the rest of the body.",
+            "A group of flamingos is called a 'flamboyance'.",
+            "Bananas are berries, but strawberries aren't!",
+            "The Eiffel Tower can be 15 cm taller during the summer due to thermal expansion.",
+            "A cockroach can live for up to a week without its head.",
+            "Sharks have been around longer than dinosaurs—for about 200 million years!",
+            "Butterflies taste with their feet to find out whether the plant they sit on is suitable to lay eggs on.",
+            "A group of crows is called a 'murder'.",
+            "Cleopatra lived closer to the invention of the iPhone than to the construction of the Great Pyramid.",
+            "Honey contains a natural chemical that kills bacteria.",
+            "A snail can sleep for up to 3 years.",
+            "The shortest war in history lasted only 38 to 45 minutes.",
+            "Penguins propose to their mates with a pebble.",
+            "An octopus's blood is blue because it contains copper instead of iron.",
+            "The fingerprints of koalas are so similar to human fingerprints that they could confuse crime scene investigators!",
+            "A group of owls is called a 'parliament'.",
+            "Otters hold hands while sleeping so they don't drift apart.",
+            "The Great Wall of China isn't visible from space with the naked eye.",
+            "Wombats have cube-shaped poop that doesn't roll away!",
+            "A jiffy is an actual unit of time equal to one trillionth of a second.",
+            "Sloths only defecate once a week and lose 30% of their body weight when they do.",
+            "The smell of petrichor (rain on dry earth) comes from bacteria called actinomycetes.",
+            "An albatross can sleep while flying.",
+            "Cats have a third eyelid called the nictitating membrane."
+        ];
+
+        let factsDisplayed = 0;
+        let usedFacts = new Set();
+
+        function getNewFact() {
+            let availableFacts = facts.filter((_, index) => !usedFacts.has(index));
+            
+            if (availableFacts.length === 0) {
+                document.getElementById('factBox').textContent = 
+                    "You've seen all the fun facts! Click 'Reset' to start over.";
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * availableFacts.length);
+            const selectedFact = availableFacts[randomIndex];
+            const originalIndex = facts.indexOf(selectedFact);
+            
+            usedFacts.add(originalIndex);
+            factsDisplayed++;
+
+            document.getElementById('factBox').textContent = selectedFact;
+            document.getElementById('counter').textContent = factsDisplayed;
+        }
+
+        function resetFacts() {
+            usedFacts.clear();
+            factsDisplayed = 0;
+            document.getElementById('factBox').textContent = 
+                "Click 'Get a Fact' to discover something amazing!";
+            document.getElementById('counter').textContent = '0';
+        }
+    </script>
+</body>
+</html>
